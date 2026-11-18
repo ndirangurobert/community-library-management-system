@@ -3,6 +3,7 @@ session_start(); date_default_timezone_set('Africa/Nairobi');
 $pdo=new PDO('mysql:host=localhost;dbname=community_library;charset=utf8mb4','root','',[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC]);
 function e($v){return htmlspecialchars((string)$v,ENT_QUOTES,'UTF-8');}
 function csrf(){if(empty($_SESSION['csrf']))$_SESSION['csrf']=bin2hex(random_bytes(32));return $_SESSION['csrf'];}
+function notice($message){$_SESSION['notice']=$message;}
 function check_csrf(){if($_SERVER['REQUEST_METHOD']==='POST'&&!hash_equals($_SESSION['csrf']??'',$_POST['csrf']??'')){http_response_code(419);exit('Form expired. Go back and try again.');}}
 function login_required(){if(empty($_SESSION['uid'])){header('Location: login.php');exit;}}
 function admin_required(){login_required();if($_SESSION['role']!=='admin'){http_response_code(403);exit('Administrator access only.');}}
